@@ -49,6 +49,7 @@ Environment Isolation (dev, staging, prod)
 │       └── ci-cd.yaml
 ├── README.md
 ```
+```
 🧩 1. Modules
 
 We'll start with the reusable modules.
@@ -80,15 +81,18 @@ resource "google_container_node_pool" "primary_nodes" {
     ]
   }
 }
-
+```
+```
 # variables.tf
 variable "cluster_name" {}
 variable "location" {}
 variable "network" {}
 variable "subnetwork" {}
 variable "node_count" {}
+```
 
 🔹 modules/helm/main.tf
+```
 provider "helm" {
   kubernetes {
     config_path = var.kubeconfig_path
@@ -115,8 +119,10 @@ resource "helm_release" "prometheus" {
 }
 
 variable "kubeconfig_path" {}
+```
 
 🔹 modules/argocd/main.tf
+```
 resource "helm_release" "argocd" {
   name       = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
@@ -126,8 +132,9 @@ resource "helm_release" "argocd" {
 
   create_namespace = true
 }
-
+```
 🔹 modules/secrets/main.tf
+```
 resource "google_secret_manager_secret" "example" {
   secret_id = var.secret_name
   replication {
@@ -142,8 +149,9 @@ resource "google_secret_manager_secret_version" "example" {
 
 variable "secret_name" {}
 variable "secret_value" {}
-
+```
 🔹 modules/k8s-deployment/main.tf
+```
 resource "kubernetes_deployment" "app" {
   metadata {
     name      = "hello-app"
@@ -178,9 +186,11 @@ resource "kubernetes_deployment" "app" {
     }
   }
 }
-
+```
 🌍 2. Environments
+
 🔹 envs/dev/main.tf
+```
 provider "google" {
   project = "your-dev-project"
   region  = "us-central1"
@@ -217,20 +227,23 @@ module "secrets" {
 module "k8s_deployment" {
   source = "../../modules/k8s-deployment"
 }
-
+```
 🔹 envs/dev/backend.tf
+```
 terraform {
   backend "gcs" {
     bucket = "my-terraform-state"
     prefix = "dev"
   }
 }
-
+```
 🔹 envs/dev/terraform.tfvars
+```
 # Leave empty or use for overriding variables
-
+```
 🔁 3. GitHub Actions for CI/CD
 📁 .github/workflows/ci-cd.yaml
+```
 name: Deploy to GKE
 
 on:
@@ -267,8 +280,9 @@ jobs:
       - name: Apply Kubernetes Manifests
         run: |
           kubectl apply -f k8s/sample-deployment.yaml
-
+```
 📄 k8s/sample-deployment.yaml
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -288,7 +302,7 @@ spec:
           image: gcr.io/YOUR_PROJECT_ID/hello-app:latest
           ports:
             - containerPort: 8080
-
+```
 ✅ Steps to Use
 
 Configure GCP project & enable APIs
@@ -307,6 +321,7 @@ Configure GitHub secrets:
 GCP_PROJECT
 
 GCP_SA_KEY (Base64 or raw JSON of service account key)
+```
 
 📌 Notes
 
