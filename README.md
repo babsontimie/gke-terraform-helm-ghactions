@@ -49,6 +49,7 @@ Environment Isolation (dev, staging, prod)
 │       └── ci-cd.yaml
 ├── README.md
 ```
+```
 🧩 1. Modules
 
 We'll start with the reusable modules.
@@ -307,6 +308,7 @@ Configure GitHub secrets:
 GCP_PROJECT
 
 GCP_SA_KEY (Base64 or raw JSON of service account key)
+```
 
 📌 Notes
 
