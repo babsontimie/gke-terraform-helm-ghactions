@@ -26,7 +26,7 @@ Sample Kubernetes Deployment
 Environment Isolation (dev, staging, prod)
 
 🧱 Project Structure
-terraform-gke-infra/
+```terraform-gke-infra/
 ├── envs/
 │   ├── dev/
 │   │   └── main.tf
@@ -48,7 +48,7 @@ terraform-gke-infra/
 │   └── workflows/
 │       └── ci-cd.yaml
 ├── README.md
-
+```
 🧩 1. Modules
 
 We'll start with the reusable modules.
