@@ -304,7 +304,7 @@ spec:
             - containerPort: 8080
 ```
 ✅ Steps to Use
-
+```
 Configure GCP project & enable APIs
 
 Create GCS bucket for Terraform backend
